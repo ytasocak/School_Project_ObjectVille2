@@ -18,6 +18,19 @@ public class UtilityFlowManager {
         tracker.reset();
         queue.add(startHub);
         tracker.markVisited(startHub.getX(), startHub.getY());
+        while (!queue.isEmpty()) {
+            Cell current = queue.poll();
+
+            Cell[] neighbors = validator.getNeighbors(grid, current.getX(), current.getY());
+
+            for (Cell neighbor : neighbors) {
+                if (neighbor != null && !tracker.isVisited(neighbor.getX(), neighbor.getY())) {
+                    tracker.markVisited(neighbor.getX(), neighbor.getY());
+                    queue.add(neighbor);
+                }
+            }
+        }
+
     }
 
     public void processGrid(Cell[][] grid) {
