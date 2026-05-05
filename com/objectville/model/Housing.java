@@ -2,6 +2,10 @@ package com.objectville.model;
 
 public class Housing extends Zone {
 
+    public Housing(int x, int y, char symbol) {
+        super(x, y, symbol);
+    }
+
     @Override
     public void updateZone(){
         int m = Math.min(electricityReceived,waterReceived);
