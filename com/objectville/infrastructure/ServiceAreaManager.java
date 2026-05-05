@@ -1,6 +1,7 @@
 package com.objectville.infrastructure;
 
-import com.objectville.core.Cell;
+import com.objectville.model.Cell;
+import com.objectville.model.Zone;
 
 public class ServiceAreaManager {
     public void applyServices(Cell[][] grid) {

@@ -1,6 +1,6 @@
-package com.objectville.infrastructure;
+package com.objectville.model;
 
-import com.objectville.core.Cell;
+
 
 public class EmptyCell extends Cell {
     public EmptyCell(int x, int y) {

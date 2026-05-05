@@ -1,7 +1,8 @@
 package com.objectville.infrastructure;
 
 import java.util.*;
-import com.objectville.core.Cell;
+import com.objectville.model.Cell;
+import com.objectville.model.UtilityHub;
 
 public class UtilityFlowManager {
     private ConnectivityValidator validator;
