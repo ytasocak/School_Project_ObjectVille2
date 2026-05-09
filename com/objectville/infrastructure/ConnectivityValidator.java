@@ -1,11 +1,11 @@
 package com.objectville.infrastructure;
 
-import com.objectville.core.Cell;
-import com.objectville.core.IConnectable;
+import com.objectville.model.Cell;
+import com.objectville.model.IConnectable;
 
 public class ConnectivityValidator {
-    private static final int[] DR = { -1, -1, -1, 0, 0, 1, 1, 1 };
-    private static final int[] DC = { -1, 0, 1, -1, 1, -1, 0, 1 };
+    private static final int[] delta_Row = { -1, -1, -1, 0, 0, 1, 1, 1 };
+    private static final int[] delta_Column = { -1, 0, 1, -1, 1, -1, 0, 1 };
     private int rows, cols;
 
     public ConnectivityValidator(int rows, int cols) {
@@ -25,8 +25,8 @@ public class ConnectivityValidator {
         Cell[] temp = new Cell[8];
         int count = 0;
         for (int i = 0; i < 8; i++) {
-            int nextR = r + DR[i];
-            int nextC = c + DC[i];
+            int nextR = r + delta_Row[i];
+            int nextC = c + delta_Column[i];
             if (isValid(nextR, nextC) && canFlow(grid[nextR][nextC])) {
                 temp[count++] = grid[nextR][nextC];
             }

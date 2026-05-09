@@ -1,0 +1,5 @@
+# keep all files in utf-8 so we dont get encoding errors
+root = true
+
+[*]
+charset = utf-8
