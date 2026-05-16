@@ -1,4 +1,4 @@
-package com.objectville.model;
+package com.objectville.model.base;
 
 // Basic Cell Class
 public abstract class Cell {

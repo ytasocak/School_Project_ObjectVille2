@@ -1,10 +1,10 @@
 package com.objectville.infrastructure;
 
 import java.util.*;
-import com.objectville.model.Cell;
-import com.objectville.model.IPowerable;
-import com.objectville.model.IWaterable;
-import com.objectville.model.UtilityHub;
+import com.objectville.model.base.Cell;
+import com.objectville.model.interfaces.IPowerable;
+import com.objectville.model.interfaces.IWaterable;
+import com.objectville.model.utility.UtilityHub;
 
 public class UtilityFlowManager {
     private ConnectivityValidator validator;

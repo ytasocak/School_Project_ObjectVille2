@@ -1,7 +1,7 @@
 package com.objectville.infrastructure;
 
-import com.objectville.model.Cell;
-import com.objectville.model.IConnectable;
+import com.objectville.model.base.Cell;
+import com.objectville.model.interfaces.IConnectable;
 
 public class ConnectivityValidator {
     private static final int[] delta_Row = { -1, -1, -1, 0, 0, 1, 1, 1 };

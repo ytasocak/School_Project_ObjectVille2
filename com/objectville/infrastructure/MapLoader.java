@@ -1,5 +1,5 @@
 package com.objectville.infrastructure;
-import com.objectville.model.Cell;
+import com.objectville.model.base.Cell;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

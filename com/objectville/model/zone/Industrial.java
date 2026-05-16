@@ -1,4 +1,4 @@
-package com.objectville.model;
+package com.objectville.model.zone;
 
 public class Industrial extends Zone {
 

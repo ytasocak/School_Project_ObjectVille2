@@ -1,4 +1,8 @@
-package com.objectville.model;
+package com.objectville.model.zone;
+
+import com.objectville.model.base.Cell;
+import com.objectville.model.interfaces.IPowerable;
+import com.objectville.model.interfaces.IWaterable;
 
 public abstract class Zone extends Cell implements IPowerable, IWaterable {
     protected int level;

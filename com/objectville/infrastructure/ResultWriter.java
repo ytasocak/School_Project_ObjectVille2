@@ -1,6 +1,6 @@
 package com.objectville.infrastructure;
 
-import com.objectville.model.Cell;
+import com.objectville.model.base.Cell;
 
 import java.io.FileWriter;
 import java.io.IOException;

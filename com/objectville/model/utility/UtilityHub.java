@@ -1,6 +1,7 @@
-package com.objectville.model;
+package com.objectville.model.utility;
 
 
+import com.objectville.model.base.Cell;
 
 public abstract class UtilityHub extends Cell {
     private static final int MAX_CAPACITY = 100;

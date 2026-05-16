@@ -1,4 +1,4 @@
-package com.objectville.Exceptions;
+package com.objectville.exceptions;
 
 public class MapValidationException extends RuntimeException {
     public MapValidationException(String message) {
