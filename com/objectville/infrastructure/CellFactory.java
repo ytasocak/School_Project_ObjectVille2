@@ -4,6 +4,7 @@ import com.objectville.exceptions.MapValidationException;
 import com.objectville.model.base.Cell;
 import com.objectville.model.base.EmptyCell;
 import com.objectville.model.base.Road;
+import com.objectville.model.zone.Commercial;
 import com.objectville.model.zone.Housing;
 import com.objectville.model.zone.Industrial;
 
@@ -14,7 +15,7 @@ public class CellFactory {
             case 'H': return new Housing(row, col,'H');
             case 'R': return new Road(row,col);
             case 'I': return new Industrial(row,col,'I'); // NULL AS A PLACEHOLDER
-            case 'C': return null;
+            case 'C': return new Commercial(row,col,'C');
             case 'P': return null;
             case 'W': return null;
             case 'T': return null;
