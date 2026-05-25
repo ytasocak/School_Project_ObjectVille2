@@ -1,10 +1,11 @@
 package com.objectville.model.zone;
 
 import com.objectville.model.base.Cell;
+import com.objectville.model.interfaces.IConnectable;
 import com.objectville.model.interfaces.IPowerable;
 import com.objectville.model.interfaces.IWaterable;
 
-public abstract class Zone extends Cell implements IPowerable, IWaterable {
+public abstract class Zone extends Cell implements IPowerable, IWaterable, IConnectable {
     protected int level;
     protected int electricityReceived;
     protected int waterReceived;
@@ -73,6 +74,9 @@ public abstract class Zone extends Cell implements IPowerable, IWaterable {
     public void receiveLifestyle(int amount) {
         lifestyleReceived += amount;
     }
+
+    @Override
+    public boolean canConduct(){return true;}
 
     public void resetTickData() {
         electricityReceived = 0;
