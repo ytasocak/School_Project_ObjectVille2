@@ -2,6 +2,7 @@ package com.objectville;
 
 import com.objectville.infrastructure.*;
 import com.objectville.model.base.Cell;
+import com.objectville.model.zone.Zone;
 
 public class Main {
     public static void main(String[] args){
@@ -22,5 +23,18 @@ public class Main {
             return;
         }
         System.out.println("-----------------------------------------------");
+         for(int currentTick=1; currentTick<=totalTicks;currentTick++){
+            System.out.println("Tick :"+currentTick);
+
+            for(int row=0; row<grid.length;row++){
+                for(int col= 0;col<grid[0].length;col++){
+                    Cell currentCell=grid[row][col];
+                    if (currentCell instanceof Zone) {
+                        Zone z = (Zone) currentCell;
+                        z.resetTickData();
+                    }
+                }
+            }
+        }
     }
 }
