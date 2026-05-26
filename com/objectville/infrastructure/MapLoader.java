@@ -17,7 +17,7 @@ public class MapLoader {
         List<String> lines = getStrings(fileName);
 
         int n = lines.size();
-        int m = lines.getFirst().length();
+        int m = lines.get(0).length();
 
         Cell[][] grid = new Cell[n][m];
 
