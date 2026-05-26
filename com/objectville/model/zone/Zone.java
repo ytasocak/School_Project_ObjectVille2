@@ -76,7 +76,9 @@ public abstract class Zone extends Cell implements IPowerable, IWaterable, IConn
     }
 
     @Override
-    public boolean canConduct(){return true;}
+    public boolean canConduct() {
+        return true;
+    }
 
     public void resetTickData() {
         electricityReceived = 0;

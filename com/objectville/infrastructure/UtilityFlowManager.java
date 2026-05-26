@@ -21,7 +21,7 @@ public class UtilityFlowManager {
         tracker.reset();
         queue.add(startHub);
         tracker.markVisited(startHub.getX(), startHub.getY());
-        
+
         while (!queue.isEmpty()) {
             // Stop if hub capacity is exhausted (100 zones limit)
             if (startHub.getAvailableCapacity() <= 0) {
@@ -33,6 +33,9 @@ public class UtilityFlowManager {
 
             for (Cell neighbor : neighbors) {
                 if (neighbor != null && !tracker.isVisited(neighbor.getX(), neighbor.getY())) {
+                    if (startHub.getAvailableCapacity() <= 0) {
+                        break;
+                    }
                     // Check hub type and deliver utility accordingly
                     if (startHub.getSymbol() == 'P' && neighbor instanceof IPowerable) {
                         ((IPowerable) neighbor).receiveElectricity(1);
@@ -41,7 +44,7 @@ public class UtilityFlowManager {
                         ((IWaterable) neighbor).receiveWater(1);
                         startHub.consumeCapacity(1);
                     }
-                    
+
                     // Mark visited and add to queue to continue flow
                     tracker.markVisited(neighbor.getX(), neighbor.getY());
                     queue.add(neighbor);

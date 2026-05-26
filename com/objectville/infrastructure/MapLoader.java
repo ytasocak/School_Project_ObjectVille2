@@ -26,8 +26,7 @@ public class MapLoader {
 
             if (rowLine.length() != m) {
                 throw new MapValidationException(
-                        "Map dimensions do not match! Expected row length: " + m + ", Error at row: " + row
-                );
+                        "Map dimensions do not match! Expected row length: " + m + ", Error at row: " + row);
             }
 
             for (int col = 0; col < m; col++) {
