@@ -5,6 +5,7 @@ import com.objectville.model.base.Cell;
 import com.objectville.model.interfaces.IPowerable;
 import com.objectville.model.interfaces.IWaterable;
 import com.objectville.model.utility.UtilityHub;
+import com.objectville.model.zone.Zone;
 
 public class UtilityFlowManager {
     private ConnectivityValidator validator;
@@ -42,6 +43,9 @@ public class UtilityFlowManager {
                         startHub.consumeCapacity(1);
                     } else if (startHub.getSymbol() == 'W' && neighbor instanceof IWaterable) {
                         ((IWaterable) neighbor).receiveWater(1);
+                        startHub.consumeCapacity(1);
+                    } else if (startHub.getSymbol() == 'T' && neighbor instanceof Zone) {
+                        ((Zone) neighbor).receiveInternet(1);
                         startHub.consumeCapacity(1);
                     }
 
