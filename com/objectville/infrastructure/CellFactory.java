@@ -22,9 +22,9 @@ public class CellFactory {
             case 'P': return new PowerPlant(row,col);
             case 'W': return new WaterStation(row,col);
             case 'T': return new InternetHub(row, col);
-            case 'F': return null;
-            case 'D': return null;
-            case 'S': return null;
+            case 'F': return new PoliceStation(row,col);
+            case 'D': return new Hospital(row,col);
+            case 'S': return new School(row,col);
             default:
                 throw new MapValidationException("Unknown symbol at (" + row + "," + col + "): " + type);
     }
