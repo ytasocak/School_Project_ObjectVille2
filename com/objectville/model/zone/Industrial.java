@@ -2,49 +2,45 @@ package com.objectville.model.zone;
 
 public class Industrial extends Zone {
 
-    public Industrial(int x, int y, char symbol){
-        super(x,y,symbol);
+    public Industrial(int x, int y, char symbol) {
+        super(x, y, symbol);
     }
 
     @Override
-    public void updateZone(){
+    public void updateZone() {
 
         int m = Math.min(electricityReceived, waterReceived);
 
-        if(m == 0 || populationReceived == 0){
-            level=0;
-            output=0;
-            utilityDemand=1;
+        if (m == 0) {
+            level = 0;
+            output = 0;
+            utilityDemand = 1;
             return;
         }
 
-        int targetLevel = 1;
+        int targetLevel = 0;
 
-        if(hasSecurity){
+        if (populationReceived > 0) {
+            targetLevel = 1;
+        }
+
+        if (populationReceived > 0 && hasSecurity) {
             targetLevel = 2;
         }
 
-        if(hasSecurity && populationReceived> m){
+        if (hasSecurity && populationReceived > m) {
             targetLevel = 3;
         }
 
-        if(level<targetLevel){
+        if (level < targetLevel) {
             level++;
-        } else if (level>targetLevel) {
+        } else if (level > targetLevel) {
             level--;
         }
 
-        if(level == 1){
-            output=m;
-        } else if (level==2){
-            output=2*m;
-        } else if (level==3) {
-            output = 2*m+populationReceived;
-        }else {
-            output=0;
-        }
-
-        utilityDemand=Math.max(output,1);
-
+        output = ProductivityEngine.calculateIndustrialOutput(level, m, populationReceived);
+        utilityDemand = Math.max(output, 1);
     }
 }
+
+

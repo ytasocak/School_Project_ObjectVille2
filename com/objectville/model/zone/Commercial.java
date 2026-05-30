@@ -11,20 +11,24 @@ public class Commercial extends Zone {
         int m = Math.min(electricityReceived,waterReceived);
         m = Math.min(m,internetReceived);
 
-        if (m== 0 || populationReceived==0 || goodsReceived==0){
+        if (m== 0){
             level=0;
             output=0;
             utilityDemand=1;
             return;
         }
 
-        int targetLevel=1;
+        int targetLevel=0;
 
-        if(hasSecurity){
+        if(populationReceived > 0 && goodsReceived > 0){
+            targetLevel=1;
+        }
+
+        if(populationReceived > 0 && goodsReceived > 0 && hasSecurity){
             targetLevel=2;
         }
 
-        if(hasSecurity && populationReceived>m && goodsReceived>m){
+        if (hasSecurity && populationReceived > m && goodsReceived > m){
             targetLevel=3;
         }
 
@@ -34,17 +38,9 @@ public class Commercial extends Zone {
             level--;
         }
 
-        if(level==1){
-            output=m;
-        } else if (level==2) {
-            output = 2*m;
-        } else if (level==3) {
-            output = 2*m+Math.min(populationReceived,goodsReceived);
-        }else{
-            output=0;
-        }
 
 
+        output = ProductivityEngine.calculateCommercialOutput(level, m, populationReceived, goodsReceived);
         utilityDemand = Math.max(output,1);
     }
 
