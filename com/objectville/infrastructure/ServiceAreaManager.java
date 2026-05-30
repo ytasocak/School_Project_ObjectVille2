@@ -2,6 +2,7 @@ package com.objectville.infrastructure;
 
 import com.objectville.model.base.Cell;
 import com.objectville.model.zone.Zone;
+import com.objectville.model.base.ServiceBuilding;
 
 public class ServiceAreaManager {
     public void applyServices(Cell[][] grid) {
@@ -15,7 +16,7 @@ public class ServiceAreaManager {
 
                 // F=FireStation(Security), D=Doctor(Health), S=School(Education)
                 if (sym == 'F' || sym == 'D' || sym == 'S') {
-                    int range = 5; // default range for now
+                    int range = ((ServiceBuilding) grid[r][c]).getRadius();
 
                     // apply effect to nearby zones
                     for (int targetR = 0; targetR < grid.length; targetR++) {
