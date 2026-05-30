@@ -23,11 +23,21 @@ public class Main {
             return;
         }
         System.out.println("-----------------------------------------------");
-         for(int currentTick=1; currentTick<=totalTicks;currentTick++){
+        ServiceAreaManager serviceManager= new ServiceAreaManager();
+
+        ConnectivityValidator connectivityValidator=new ConnectivityValidator(grid.length,grid[0].length);
+        VisitedTracker visitedTracker= new VisitedTracker(grid.length,grid[0].length);
+        UtilityFlowManager utilityManager= new UtilityFlowManager(connectivityValidator,visitedTracker);
+
+        int totalPopulationPool=0;
+        int totalGoodsPool=0;
+        int totalLifeStylePool=0;
+
+        for(int currentTick=1; currentTick<=totalTicks;currentTick++){
             System.out.println("Tick :"+currentTick);
 
             for(int row=0; row<grid.length;row++){
-                for(int col= 0;col<grid[0].length;col++){
+                for(int col=0;col<grid[0].length;col++){
                     Cell currentCell=grid[row][col];
                     if (currentCell instanceof Zone) {
                         Zone z = (Zone) currentCell;
@@ -35,14 +45,61 @@ public class Main {
                     }
                 }
             }
-        }
-        ServiceAreaManager serviceManager= new ServiceAreaManager();
-
-        ConnectivityValidator connectivityValidator=new ConnectivityValidator(grid.length,grid[0].length);
-        VisitedTracker visitedTracker= new VisitedTracker(grid.length,grid[0].length);
-        UtilityFlowManager utilityManager= new UtilityFlowManager(connectivityValidator,visitedTracker);
-
         serviceManager.applyServices(grid);
+
         utilityManager.processGrid(grid);
+
+        int housingCount=0;
+        int commercialCount=0;
+        int industrialCount=0;
+        for(int r=0; r<grid.length;r++){
+            for(int c=0; c<grid[0].length;c++){
+                if(grid[r][c] != null && grid[r][c].getSymbol()=='H'){
+                    housingCount++;
+                }else if(grid[r][c] != null && grid[r][c].getSymbol()=='C'){
+                    commercialCount++;
+                }else if(grid[r][c] != null && grid[r][c].getSymbol()=='I'){
+                    industrialCount++;
+                }
+            }
+        }
+            int populationPerHouse;
+            if(housingCount>0){
+                populationPerHouse=totalPopulationPool/housingCount;
+            }else{
+                populationPerHouse=0;
+            }
+
+            int goodsPerCommercial;
+            if(commercialCount>0){
+                goodsPerCommercial=totalGoodsPool/commercialCount;
+            }else{
+                goodsPerCommercial=0;
+            }
+
+            int lifeStylePerIndustrial;
+            if(industrialCount>0){
+                lifeStylePerIndustrial=totalLifeStylePool/industrialCount;
+            }else{
+                lifeStylePerIndustrial=0;
+            }
+            for(int r=0;r<grid.length;r++){
+                for(int c=0;c<grid[0].length;c++) {
+                    Cell currentCell=grid[r][c];
+
+                    if (currentCell instanceof Zone){
+                        Zone currentZone =(Zone) currentCell;
+                        if(currentCell.getSymbol()=='H'){
+                            currentZone.receivePopulation(populationPerHouse);
+                        }else if(currentCell.getSymbol()=='C'){
+                            currentZone.receiveGoods(goodsPerCommercial);
+                        }else if(currentCell.getSymbol()=='I'){
+                            currentZone.receiveLifestyle(lifeStylePerIndustrial);
+                        }
+                        currentZone.updateZone();
+                    }
+                }
+            }
+        }
     }
 }
