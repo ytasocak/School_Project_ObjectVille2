@@ -36,5 +36,13 @@ public class Main {
                 }
             }
         }
+        ServiceAreaManager serviceManager= new ServiceAreaManager();
+
+        ConnectivityValidator connectivityValidator=new ConnectivityValidator(grid.length,grid[0].length);
+        VisitedTracker visitedTracker= new VisitedTracker(grid.length,grid[0].length);
+        UtilityFlowManager utilityManager= new UtilityFlowManager(connectivityValidator,visitedTracker);
+
+        serviceManager.applyServices(grid);
+        utilityManager.processGrid(grid);
     }
 }
