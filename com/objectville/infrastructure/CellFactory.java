@@ -16,29 +16,18 @@ import com.objectville.model.zone.School;
 
 public class CellFactory {
     public Cell createCell(char type, int row, int col) {
-        switch (Character.toUpperCase(type)) { // Character.toUpperCase convert char to upper
-            case 'E':
-                return new EmptyCell(row, col);
-            case 'H':
-                return new Housing(row, col, 'H');
-            case 'R':
-                return new Road(row, col);
-            case 'I':
-                return new Industrial(row, col, 'I');
-            case 'C':
-                return new Commercial(row, col, 'C');
-            case 'P':
-                return new PowerPlant(row, col);
-            case 'W':
-                return new WaterStation(row, col);
-            case 'T':
-                return new InternetHub(row, col);
-            case 'F':
-                return new PoliceStation(row, col);
-            case 'D':
-                return new Hospital(row, col);
-            case 'S':
-                return new School(row, col);
+        switch (Character.toUpperCase(type)) { // Character.toUpperCase convert char to upper saw in online
+            case 'E': return new EmptyCell(row, col);
+            case 'H': return new Housing(row, col, 'H');
+            case 'R': return new Road(row, col);
+            case 'I': return new Industrial(row, col, 'I');
+            case 'C': return new Commercial(row, col, 'C');
+            case 'P': return new PowerPlant(row, col);
+            case 'W': return new WaterStation(row, col);
+            case 'T': return new InternetHub(row, col);
+            case 'F': return new PoliceStation(row, col);
+            case 'D': return new Hospital(row, col);
+            case 'S': return new School(row, col);
             default:
                 throw new MapValidationException("Unknown symbol at (" + row + "," + col + "): " + type);
         }
