@@ -10,10 +10,33 @@ import com.objectville.model.zone.Zone;
 public class UtilityFlowManager {
     private ConnectivityValidator validator;
     private VisitedTracker tracker;
+    private ResultWriter resultWriter;
 
     public UtilityFlowManager(ConnectivityValidator validator, VisitedTracker tracker) {
         this.validator = validator;
         this.tracker = tracker;
+    }
+
+    // Set result writer for logging
+    public void setResultWriter(ResultWriter resultWriter) {
+        this.resultWriter = resultWriter;
+    }
+
+    // Write log
+    private void logMessage(String message) {
+        // Temporary console print until implementing log method in ResultWriter
+        System.out.println(message);
+    }
+
+    // Helper to get formatted zone name
+    private String getZoneName(char symbol) {
+        if (symbol == 'H')
+            return "House";
+        if (symbol == 'C')
+            return "Commercial";
+        if (symbol == 'I')
+            return "Industrial";
+        return "Zone";
     }
 
     private void runBFS(Cell[][] grid, UtilityHub startHub) {
@@ -37,16 +60,41 @@ public class UtilityFlowManager {
                     if (startHub.getAvailableCapacity() <= 0) {
                         break;
                     }
-                    // Check hub type and deliver utility accordingly
-                    if (startHub.getSymbol() == 'P' && neighbor instanceof IPowerable) {
-                        ((IPowerable) neighbor).receiveElectricity(1);
-                        startHub.consumeCapacity(1);
-                    } else if (startHub.getSymbol() == 'W' && neighbor instanceof IWaterable) {
-                        ((IWaterable) neighbor).receiveWater(1);
-                        startHub.consumeCapacity(1);
-                    } else if (startHub.getSymbol() == 'T' && neighbor instanceof Zone) {
-                        ((Zone) neighbor).receiveInternet(1);
-                        startHub.consumeCapacity(1);
+
+                    // Distribute utility based on demand
+                    if (neighbor instanceof Zone) {
+                        Zone zoneNeighbor = (Zone) neighbor;
+                        int demand = zoneNeighbor.getUtilityDemand();
+                        String zName = getZoneName(zoneNeighbor.getSymbol());
+
+                        if (startHub.getSymbol() == 'P') {
+                            int needed = Math.max(0, demand - zoneNeighbor.getElectricityReceived());
+                            int absorb = Math.min(needed, startHub.getAvailableCapacity());
+                            if (absorb > 0) {
+                                zoneNeighbor.receiveElectricity(absorb);
+                                startHub.consumeCapacity(absorb);
+                                logMessage(zName + " at (" + neighbor.getX() + "," + neighbor.getY() + ") received "
+                                        + absorb + " electricity");
+                            }
+                        } else if (startHub.getSymbol() == 'W') {
+                            int needed = Math.max(0, demand - zoneNeighbor.getWaterReceived());
+                            int absorb = Math.min(needed, startHub.getAvailableCapacity());
+                            if (absorb > 0) {
+                                zoneNeighbor.receiveWater(absorb);
+                                startHub.consumeCapacity(absorb);
+                                logMessage(zName + " at (" + neighbor.getX() + "," + neighbor.getY() + ") received "
+                                        + absorb + " water");
+                            }
+                        } else if (startHub.getSymbol() == 'T') {
+                            int needed = Math.max(0, demand - zoneNeighbor.getInternetReceived());
+                            int absorb = Math.min(needed, startHub.getAvailableCapacity());
+                            if (absorb > 0) {
+                                zoneNeighbor.receiveInternet(absorb);
+                                startHub.consumeCapacity(absorb);
+                                logMessage(zName + " at (" + neighbor.getX() + "," + neighbor.getY() + ") received "
+                                        + absorb + " internet");
+                            }
+                        }
                     }
 
                     // Mark visited and add to queue to continue flow
@@ -59,6 +107,15 @@ public class UtilityFlowManager {
     }
 
     public void processGrid(Cell[][] grid) {
+        // Reset usage of all hubs before starting distribution in this tick
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[r].length; c++) {
+                if (grid[r][c] instanceof UtilityHub) {
+                    ((UtilityHub) grid[r][c]).resetUsage();
+                }
+            }
+        }
+
         // Scan map for hubs and trigger distribution
         for (int r = 0; r < grid.length; r++) {
             for (int c = 0; c < grid[r].length; c++) {
