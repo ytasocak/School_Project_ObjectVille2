@@ -75,6 +75,30 @@ public abstract class Zone extends Cell implements IPowerable, IWaterable, IConn
         lifestyleReceived += amount;
     }
 
+    public int getElectricityReceived() {
+        return electricityReceived;
+    }
+
+    public int getWaterReceived() {
+        return waterReceived;
+    }
+
+    public int getInternetReceived() {
+        return internetReceived;
+    }
+
+    public boolean hasEducation() {
+        return hasEducation;
+    }
+
+    public boolean hasHealth() {
+        return hasHealth;
+    }
+
+    public boolean hasSecurity() {
+        return hasSecurity;
+    }
+
     @Override
     public boolean canConduct() {
         return true;
