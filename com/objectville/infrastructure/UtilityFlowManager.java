@@ -24,8 +24,9 @@ public class UtilityFlowManager {
 
     // Write log
     private void logMessage(String message) {
-        // Temporary console print until implementing log method in ResultWriter
-        System.out.println(message);
+        if (resultWriter != null) {
+            resultWriter.log(message);
+        }
     }
 
     // Helper to get formatted zone name
