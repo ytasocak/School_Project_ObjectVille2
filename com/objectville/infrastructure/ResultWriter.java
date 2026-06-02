@@ -14,6 +14,7 @@ public class ResultWriter {
 
     public void log(String message){
         logs.add(message);
+        System.out.println(message);
     }
 
     public void writeResult(String filePath) {

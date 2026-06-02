@@ -5,6 +5,25 @@ import com.objectville.model.zone.Zone;
 import com.objectville.model.base.ServiceBuilding;
 
 public class ServiceAreaManager {
+    private ResultWriter resultWriter;
+
+    public void setResultWriter(ResultWriter resultWriter) {
+        this.resultWriter = resultWriter;
+    }
+
+    private void logMessage(String message) {
+        if (resultWriter != null) {
+            resultWriter.log(message);
+        }
+    }
+
+    private String getZoneName(char symbol) {
+        if (symbol == 'H') return "House";
+        if (symbol == 'C') return "Commercial";
+        if (symbol == 'I') return "Industrial";
+        return "Zone";
+    }
+
     public void applyServices(Cell[][] grid) {
         // scan all cells to find service buildings
         for (int r = 0; r < grid.length; r++) {
@@ -28,12 +47,16 @@ public class ServiceAreaManager {
                                 if (grid[targetR][targetC] instanceof Zone) {
                                     Zone targetZone = (Zone) grid[targetR][targetC];
 
-                                    if (sym == 'F')
+                                    if (sym == 'F') {
                                         targetZone.setSecurity(true);
-                                    else if (sym == 'D')
+                                        logMessage(getZoneName(targetZone.getSymbol()) + " at (" + targetR + "," + targetC + ") received security service");
+                                    } else if (sym == 'D') {
                                         targetZone.setHealth(true);
-                                    else if (sym == 'S')
+                                        logMessage(getZoneName(targetZone.getSymbol()) + " at (" + targetR + "," + targetC + ") received health service");
+                                    } else if (sym == 'S') {
                                         targetZone.setEducation(true);
+                                        logMessage(getZoneName(targetZone.getSymbol()) + " at (" + targetR + "," + targetC + ") received education service");
+                                    }
                                 }
                             }
                         }
