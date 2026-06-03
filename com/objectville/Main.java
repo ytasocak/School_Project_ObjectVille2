@@ -20,7 +20,7 @@ public class Main {
             try{
                 totalTicks = Integer.parseInt(args[1]);
             } catch(NumberFormatException e){
-
+              
             }
         }
         System.out.println("Starting ObjectVille simulation...");
@@ -100,6 +100,58 @@ public class Main {
                     }
                 }
             }
-        }    
+            for(int r = 0; r < grid.length; r++){
+                for(int c = 0; c < grid[0].length; c++) {
+                    Cell currentCell = grid[r][c];
+                    if (currentCell instanceof Zone){
+                        Zone currentZone = (Zone) currentCell;
+                        int oldLevel = currentZone.getLevel();
+                        currentZone.updateZone();
+
+                        if (currentZone.getOutput() > 0) {
+                            String typeStr = "";
+                            if (currentCell.getSymbol() == 'H') typeStr = "population";
+                            else if (currentCell.getSymbol() == 'C') typeStr = "lifestyle";
+                            else if (currentCell.getSymbol() == 'I') typeStr = "goods";
+
+                            writer.log(getZoneName(currentCell.getSymbol()) + " at (" + r + "," + c + ") generated " + currentZone.getOutput() + " " + typeStr);
+                        }
+
+                        int newLevel = currentZone.getLevel();
+                        if (newLevel > oldLevel) {
+                            writer.log(getZoneName(currentCell.getSymbol()) + " at (" + r + "," + c + ") levels up from " + oldLevel + " to " + newLevel);
+                        } else if (newLevel < oldLevel) {
+                            writer.log(getZoneName(currentCell.getSymbol()) + " at (" + r + "," + c + ") levels down from " + oldLevel + " to " + newLevel);
+                        }
+                    }
+                }
+            }
+            totalPopulationPool = 0;
+            totalGoodsPool = 0;
+            totalLifeStylePool = 0;
+
+            for(int r = 0; r < grid.length; r++){
+                for(int c = 0; c < grid[0].length; c++) {
+                    Cell currentCell = grid[r][c];
+                    if (currentCell instanceof Zone){
+                        Zone currentZone = (Zone) currentCell;
+                        if(currentCell.getSymbol() == 'H'){
+                            totalPopulationPool += currentZone.getOutput();
+                        }else if(currentCell.getSymbol() == 'I'){
+                            totalGoodsPool += currentZone.getOutput();
+                        }else if(currentCell.getSymbol() == 'C'){
+                            totalLifeStylePool += currentZone.getOutput();
+                        }
+                    }
+                }
+            }
+            writer.writeResult("output.txt");
+        }     
     }
+    private static String getZoneName(char symbol) {
+            if (symbol == 'H') return "House";
+            if (symbol == 'C') return "Commercial";
+            if (symbol == 'I') return "Industrial";
+            return "Zone";
+        }
 }
