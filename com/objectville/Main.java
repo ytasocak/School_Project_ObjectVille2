@@ -26,22 +26,14 @@ public class Main {
             }
         }
 
-        System.out.println("Starting ObjectVille simulation...");
-        System.out.println("Map File Path: " + mapFilePath);
-        System.out.println("Total Ticks to Run: " + totalTicks);
-        System.out.println("----------------------------------------------");
-
         MapLoader mapLoader = new MapLoader();
         Cell[][] grid = null;
         try {
             grid = mapLoader.loadMap(mapFilePath);
-            System.out.println("Map successfully loaded!");
-            System.out.println("Map Dimensions: " + grid.length + "x" + grid[0].length);
         } catch (Exception e){
             System.err.println("Failed to load map: " + e.getMessage());
             return;
         }
-        System.out.println("-----------------------------------------------");
 
         ResultWriter.clearFile("output.txt");
         ResultWriter writer = new ResultWriter();

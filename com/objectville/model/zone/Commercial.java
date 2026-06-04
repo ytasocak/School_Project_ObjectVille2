@@ -18,30 +18,28 @@ public class Commercial extends Zone {
             return;
         }
 
-        int targetLevel=0;
+        int targetLevel = 0;
 
-        if(populationReceived > 0 && goodsReceived > 0){
-            targetLevel=1;
+        if (m > 0) {
+            targetLevel = 1;
         }
 
-        if(populationReceived > 0 && goodsReceived > 0 && hasSecurity){
-            targetLevel=2;
+        if (m > 0 && hasSecurity) {
+            targetLevel = 2;
         }
 
-        if (hasSecurity && populationReceived > m && goodsReceived > m){
-            targetLevel=3;
+        if (hasSecurity && populationReceived > m && goodsReceived > m) {
+            targetLevel = 3;
         }
 
-        if(level<targetLevel){
+        if (level < targetLevel) {
             level++;
-        }else if(level>targetLevel){
+        } else if (level > targetLevel) {
             level--;
         }
 
-
-
         output = ProductivityEngine.calculateCommercialOutput(level, m, populationReceived, goodsReceived);
-        utilityDemand = Math.max(output,1);
+        utilityDemand = Math.max(output, 1);
     }
 
 }

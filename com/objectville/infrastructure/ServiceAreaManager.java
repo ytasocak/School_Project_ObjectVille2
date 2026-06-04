@@ -40,9 +40,9 @@ public class ServiceAreaManager {
                     // apply effect to nearby zones
                     for (int targetR = 0; targetR < grid.length; targetR++) {
                         for (int targetC = 0; targetC < grid[targetR].length; targetC++) {
-                            int distance = Math.abs(r - targetR) + Math.abs(c - targetC);
+                            double distance = Math.sqrt(Math.pow(r - targetR, 2) + Math.pow(c - targetC, 2));
 
-                            // check if inside manhattan distance
+                            // check if inside range using Euclidean distance
                             if (distance <= range) {
                                 if (grid[targetR][targetC] instanceof Zone) {
                                     Zone targetZone = (Zone) grid[targetR][targetC];
@@ -50,10 +50,10 @@ public class ServiceAreaManager {
                                     if (sym == 'F') {
                                         targetZone.setSecurity(true);
                                         logMessage(getZoneName(targetZone.getSymbol()) + " at (" + targetR + "," + targetC + ") received security service");
-                                    } else if (sym == 'D') {
+                                    } else if (sym == 'D' && targetZone.getSymbol() == 'H') {
                                         targetZone.setHealth(true);
                                         logMessage(getZoneName(targetZone.getSymbol()) + " at (" + targetR + "," + targetC + ") received health service");
-                                    } else if (sym == 'S') {
+                                    } else if (sym == 'S' && targetZone.getSymbol() == 'H') {
                                         targetZone.setEducation(true);
                                         logMessage(getZoneName(targetZone.getSymbol()) + " at (" + targetR + "," + targetC + ") received education service");
                                     }

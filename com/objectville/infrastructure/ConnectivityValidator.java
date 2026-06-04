@@ -4,8 +4,8 @@ import com.objectville.model.base.Cell;
 import com.objectville.model.interfaces.IConnectable;
 
 public class ConnectivityValidator {
-    private static final int[] delta_Row = { -1, -1, -1, 0, 0, 1, 1, 1 };
-    private static final int[] delta_Column = { -1, 0, 1, -1, 1, -1, 0, 1 };
+    private static final int[] delta_Row = { -1, 1, 0, 0 };
+    private static final int[] delta_Column = { 0, 0, -1, 1 };
     private int rows, cols;
 
     public ConnectivityValidator(int rows, int cols) {
@@ -22,9 +22,9 @@ public class ConnectivityValidator {
     }
 
     public Cell[] getNeighbors(Cell[][] grid, int r, int c) {
-        Cell[] temp = new Cell[8];
+        Cell[] temp = new Cell[4];
         int count = 0;
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 4; i++) {
             int nextR = r + delta_Row[i];
             int nextC = c + delta_Column[i];
             if (isValid(nextR, nextC) && canFlow(grid[nextR][nextC])) {

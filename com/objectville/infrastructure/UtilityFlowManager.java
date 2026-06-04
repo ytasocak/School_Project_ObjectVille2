@@ -86,7 +86,7 @@ public class UtilityFlowManager {
                                 logMessage(zName + " at (" + neighbor.getX() + "," + neighbor.getY() + ") received "
                                         + absorb + " water");
                             }
-                        } else if (startHub.getSymbol() == 'T') {
+                        } else if (startHub.getSymbol() == 'T' && (zoneNeighbor.getSymbol() == 'H' || zoneNeighbor.getSymbol() == 'C')) {
                             int needed = Math.max(0, demand - zoneNeighbor.getInternetReceived());
                             int absorb = Math.min(needed, startHub.getAvailableCapacity());
                             if (absorb > 0) {

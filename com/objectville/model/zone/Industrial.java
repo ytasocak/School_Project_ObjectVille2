@@ -20,11 +20,11 @@ public class Industrial extends Zone {
 
         int targetLevel = 0;
 
-        if (populationReceived > 0) {
+        if (m > 0) {
             targetLevel = 1;
         }
 
-        if (populationReceived > 0 && hasSecurity) {
+        if (m > 0 && hasSecurity) {
             targetLevel = 2;
         }
 
