@@ -5,59 +5,64 @@ import com.objectville.model.base.Cell;
 import com.objectville.model.zone.Zone;
 
 public class Main {
+    private static String getZoneName(char symbol) {
+        if (symbol == 'H') return "House";
+        if (symbol == 'C') return "Commercial";
+        if (symbol == 'I') return "Industrial";
+        return "Zone";
+    }
+
     public static void main(String[] args){
-        if(args.length<2){
-            System.err.println("Error: Please enter the map file and the number of ticks.");
-            System.err.println("Usage: java Main <map_file.txt> <tick_count>");
-            return;
+        String mapFilePath = "map.txt";
+        int totalTicks = 5;
+
+        if (args.length > 0) {
+            mapFilePath = args[0];
         }
-        String mapFilePath="map.txt";
-        int totalTicks=5;
-        if(args.length>0){
-            mapFilePath=args[0];
-        }
-        if(args.length>1){
-            try{
+        if (args.length > 1) {
+            try {
                 totalTicks = Integer.parseInt(args[1]);
-            } catch(NumberFormatException e){
-              
+            } catch (NumberFormatException e) {
             }
         }
+
         System.out.println("Starting ObjectVille simulation...");
-        System.out.println("Map File Path: "+mapFilePath);
-        System.out.println("Total Ticks to Run: "+totalTicks);
-        System.out.println("-------------------------------------------");
+        System.out.println("Map File Path: " + mapFilePath);
+        System.out.println("Total Ticks to Run: " + totalTicks);
+        System.out.println("----------------------------------------------");
 
         MapLoader mapLoader = new MapLoader();
         Cell[][] grid = null;
-        try{
+        try {
             grid = mapLoader.loadMap(mapFilePath);
             System.out.println("Map successfully loaded!");
-            System.out.println("Map Dimensions: "+ grid.length+ "x"+grid[0].length);
-        } catch(Exception e){
+            System.out.println("Map Dimensions: " + grid.length + "x" + grid[0].length);
+        } catch (Exception e){
             System.err.println("Failed to load map: " + e.getMessage());
             return;
         }
-        System.out.println("--------------------------------------------");
+        System.out.println("-----------------------------------------------");
 
         ResultWriter.clearFile("output.txt");
         ResultWriter writer = new ResultWriter();
+
         ServiceAreaManager serviceManager = new ServiceAreaManager();
         serviceManager.setResultWriter(writer);
 
-        ConnectivityValidator connectivityValidator=new ConnectivityValidator(grid.length, grid[0].length);
-        VisitedTracker visitedTracker= new VisitedTracker(grid.length, grid[0].length);
-        UtilityFlowManager utilityManager= new UtilityFlowManager(connectivityValidator,visitedTracker);
+        ConnectivityValidator connectivityValidator = new ConnectivityValidator(grid.length, grid[0].length);
+        VisitedTracker visitedTracker = new VisitedTracker(grid.length, grid[0].length);
+        UtilityFlowManager utilityManager = new UtilityFlowManager(connectivityValidator, visitedTracker);
         utilityManager.setResultWriter(writer);
 
-        int totalPopulationPool=0;
-        int totalGoodsPool=0;
-        int totalLifeStylePool=0;
+        int totalPopulationPool = 0;
+        int totalGoodsPool = 0;
+        int totalLifeStylePool = 0;
 
-        for(int currentTick=1;currentTick<=totalTicks;currentTick++) {
+        for(int currentTick = 1; currentTick <= totalTicks; currentTick++){
             writer.log("Tick " + currentTick);
-            for (int row = 0; row < grid.length; row++) {
-                for (int col = 0; col < grid[0].length; col++) {
+
+            for(int row = 0; row < grid.length; row++){
+                for(int col = 0; col < grid[0].length; col++){
                     Cell currentCell = grid[row][col];
                     if (currentCell instanceof Zone) {
                         Zone z = (Zone) currentCell;
@@ -65,41 +70,46 @@ public class Main {
                     }
                 }
             }
+
             serviceManager.applyServices(grid);
+
             utilityManager.processGrid(grid);
+
             int housingCount = 0;
             int commercialCount = 0;
             int industrialCount = 0;
-            for (int r = 0; r < grid.length; r++) {
-                for (int c = 0; c < grid[0].length; c++) {
-                    if (grid[r][c] != null) {
-                        char symbol = grid[r][c].getSymbol();
-                        if (symbol == 'H') housingCount++;
-                        else if (symbol == 'C') commercialCount++;
-                        else if (symbol == 'I') industrialCount++;
+            for(int r = 0; r < grid.length; r++){
+                for(int c = 0; c < grid[0].length; c++){
+                    if(grid[r][c] != null) {
+                        char sym = grid[r][c].getSymbol();
+                        if(sym == 'H') housingCount++;
+                        else if(sym == 'C') commercialCount++;
+                        else if(sym == 'I') industrialCount++;
                     }
                 }
             }
+
             int lifestylePerHouse = housingCount > 0 ? totalLifeStylePool / housingCount : 0;
             int goodsPerCommercial = commercialCount > 0 ? totalGoodsPool / commercialCount : 0;
             int populationPerWorker = (industrialCount + commercialCount) > 0 ? totalPopulationPool / (industrialCount + commercialCount) : 0;
 
-            for (int r = 0; r < grid.length; r++) {
-                for (int c = 0; c < grid[0].length; c++) {
+            for(int r = 0; r < grid.length; r++){
+                for(int c = 0; c < grid[0].length; c++) {
                     Cell currentCell = grid[r][c];
-                    if (currentCell instanceof Zone) {
+                    if (currentCell instanceof Zone){
                         Zone currentZone = (Zone) currentCell;
-                        if (currentCell.getSymbol() == 'H') {
+                        if(currentCell.getSymbol() == 'H'){
                             currentZone.receiveLifestyle(lifestylePerHouse);
-                        } else if (currentCell.getSymbol() == 'I') {
+                        }else if(currentCell.getSymbol() == 'I'){
                             currentZone.receivePopulation(populationPerWorker);
-                        } else if (currentCell.getSymbol() == 'C') {
+                        }else if(currentCell.getSymbol() == 'C'){
                             currentZone.receivePopulation(populationPerWorker);
                             currentZone.receiveGoods(goodsPerCommercial);
                         }
                     }
                 }
             }
+
             for(int r = 0; r < grid.length; r++){
                 for(int c = 0; c < grid[0].length; c++) {
                     Cell currentCell = grid[r][c];
@@ -126,6 +136,7 @@ public class Main {
                     }
                 }
             }
+
             totalPopulationPool = 0;
             totalGoodsPool = 0;
             totalLifeStylePool = 0;
@@ -145,13 +156,8 @@ public class Main {
                     }
                 }
             }
+
             writer.writeResult("output.txt");
-        }     
-    }
-    private static String getZoneName(char symbol) {
-            if (symbol == 'H') return "House";
-            if (symbol == 'C') return "Commercial";
-            if (symbol == 'I') return "Industrial";
-            return "Zone";
         }
+    }
 }
