@@ -28,7 +28,7 @@ public class Industrial extends Zone {
             targetLevel = 2;
         }
 
-        if (hasSecurity && populationReceived > m) {
+        if (hasSecurity && populationReceived > 0) {
             targetLevel = 3;
         }
 

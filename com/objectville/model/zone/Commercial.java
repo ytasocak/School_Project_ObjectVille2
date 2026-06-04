@@ -28,7 +28,7 @@ public class Commercial extends Zone {
             targetLevel = 2;
         }
 
-        if (hasSecurity && populationReceived > m && goodsReceived > m) {
+        if (hasSecurity && populationReceived > 0 && goodsReceived > 0) {
             targetLevel = 3;
         }
 

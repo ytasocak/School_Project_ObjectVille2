@@ -92,11 +92,23 @@ public class Main {
                         Zone currentZone = (Zone) currentCell;
                         if(currentCell.getSymbol() == 'H'){
                             currentZone.receiveLifestyle(lifestylePerHouse);
+                            if (lifestylePerHouse > 0) {
+                                writer.log("House at (" + r + "," + c + ") received " + lifestylePerHouse + " lifestyle");
+                            }
                         }else if(currentCell.getSymbol() == 'I'){
                             currentZone.receivePopulation(populationPerWorker);
+                            if (populationPerWorker > 0) {
+                                writer.log("Industrial at (" + r + "," + c + ") received " + populationPerWorker + " population");
+                            }
                         }else if(currentCell.getSymbol() == 'C'){
                             currentZone.receivePopulation(populationPerWorker);
+                            if (populationPerWorker > 0) {
+                                writer.log("Commercial at (" + r + "," + c + ") received " + populationPerWorker + " population");
+                            }
                             currentZone.receiveGoods(goodsPerCommercial);
+                            if (goodsPerCommercial > 0) {
+                                writer.log("Commercial at (" + r + "," + c + ") received " + goodsPerCommercial + " goods");
+                            }
                         }
                     }
                 }
@@ -110,14 +122,12 @@ public class Main {
                         int oldLevel = currentZone.getLevel();
                         currentZone.updateZone();
 
-                        if (currentZone.getOutput() > 0) {
-                            String typeStr = "";
-                            if (currentCell.getSymbol() == 'H') typeStr = "population";
-                            else if (currentCell.getSymbol() == 'C') typeStr = "lifestyle";
-                            else if (currentCell.getSymbol() == 'I') typeStr = "goods";
+                        String typeStr = "";
+                        if (currentCell.getSymbol() == 'H') typeStr = "population";
+                        else if (currentCell.getSymbol() == 'C') typeStr = "lifestyle";
+                        else if (currentCell.getSymbol() == 'I') typeStr = "goods";
 
-                            writer.log(getZoneName(currentCell.getSymbol()) + " at (" + r + "," + c + ") generated " + currentZone.getOutput() + " " + typeStr);
-                        }
+                        writer.log(getZoneName(currentCell.getSymbol()) + " at (" + r + "," + c + ") generated " + currentZone.getOutput() + " " + typeStr);
 
                         int newLevel = currentZone.getLevel();
                         if (newLevel > oldLevel) {
